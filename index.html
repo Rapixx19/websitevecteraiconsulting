@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VecterAI — Private Intelligence Infrastructure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Syne:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#050C1A;
+  --surface:#081226;
+  --surface2:#0C1A34;
+  --border:rgba(100,160,255,0.10);
+  --border2:rgba(100,160,255,0.18);
+  --text:#EEF2FF;
+  --muted:#5A6A8A;
+  --muted2:#8BA0C4;
+  --accent:#C9A96E;
+  --accent-dim:rgba(201,169,110,0.12);
+  --blue:#4A8FE8;
+  --blue-dim:rgba(74,143,232,0.12);
+  --font-d:'Cormorant',Georgia,serif;
+  --font-s:'Syne',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-s);
+  font-size:16px;
+  line-height:1.7;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.5rem 3rem;
+  background:linear-gradient(to bottom,rgba(9,9,13,0.95) 0%,rgba(9,9,13,0) 100%);
+  transition:background 0.3s;
+}
+nav.scrolled{background:rgba(9,9,13,0.97);border-bottom:1px solid var(--border)}
+.nav-logo{
+  font-family:var(--font-d);font-size:1.5rem;font-weight:500;
+  letter-spacing:0.02em;color:var(--text);cursor:pointer;
+  text-decoration:none;
+}
+.nav-logo span{color:var(--accent)}
+.hamburger{
+  display:flex;flex-direction:column;gap:5px;
+  cursor:pointer;padding:4px;z-index:200;
+  background:none;border:none;
+}
+.hamburger span{
+  display:block;width:24px;height:1.5px;
+  background:var(--text);transition:all 0.3s ease;transform-origin:center;
+}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* ─── DRAWER MENU ─── */
+.drawer{
+  position:fixed;inset:0;z-index:150;
+  pointer-events:none;
+}
+.drawer-overlay{
+  position:absolute;inset:0;
+  background:rgba(9,9,13,0.85);
+  opacity:0;transition:opacity 0.4s ease;
+}
+.drawer-panel{
+  position:absolute;top:0;right:0;bottom:0;
+  width:min(400px,100vw);
+  background:var(--surface);
+  border-left:1px solid var(--border);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:4rem 3rem;
+  transform:translateX(100%);transition:transform 0.45s cubic-bezier(0.22,1,0.36,1);
+}
+.drawer.open .drawer-overlay{opacity:1;pointer-events:auto}
+.drawer.open .drawer-panel{transform:translateX(0);pointer-events:auto}
+.drawer-nav{list-style:none;display:flex;flex-direction:column;gap:0.25rem}
+.drawer-nav li{overflow:hidden}
+.drawer-nav a{
+  display:block;
+  font-family:var(--font-d);font-size:3rem;font-weight:300;
+  color:var(--muted);letter-spacing:-0.01em;line-height:1.2;
+  text-decoration:none;padding:0.35rem 0;
+  transition:color 0.2s ease;cursor:pointer;
+}
+.drawer-nav a:hover,.drawer-nav a.active{color:var(--text)}
+.drawer-tagline{
+  margin-top:3rem;padding-top:2rem;
+  border-top:1px solid var(--border);
+  font-size:0.8rem;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--muted);
+}
+
+/* ─── PAGE SECTIONS ─── */
+section{display:none;min-height:100vh}
+section.active{display:block}
+#home{display:block}
+
+/* ─── HERO ─── */
+.hero{
+  position:relative;height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;
+}
+#hero-canvas{
+  position:absolute;inset:0;width:100%;height:100%;
+  opacity:0.35;
+}
+.hero-content{position:relative;z-index:2;padding:2rem}
+.hero-eyebrow{
+  display:inline-block;
+  font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:2rem;
+  border:1px solid rgba(201,169,110,0.25);
+  padding:0.4rem 1.2rem;border-radius:100px;
+}
+.hero-title{
+  font-family:var(--font-d);
+  font-size:clamp(3.5rem,10vw,8rem);
+  font-weight:300;letter-spacing:-0.02em;
+  line-height:0.95;
+  color:var(--text);margin-bottom:2rem;
+}
+.hero-title em{font-style:italic;color:var(--accent)}
+.hero-sub{
+  max-width:520px;margin:0 auto 3rem;
+  font-size:1rem;color:var(--muted2);line-height:1.75;font-weight:300;
+}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:0.75rem;
+  font-family:var(--font-s);font-size:0.82rem;
+  letter-spacing:0.12em;text-transform:uppercase;font-weight:500;
+  color:var(--bg);background:var(--text);
+  padding:0.9rem 2.2rem;border-radius:2px;
+  cursor:pointer;border:none;
+  transition:opacity 0.2s,transform 0.2s;text-decoration:none;
+}
+.hero-cta:hover{opacity:0.88;transform:translateY(-1px)}
+.hero-cta-ghost{
+  display:inline-flex;align-items:center;gap:0.75rem;
+  font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;
+  color:var(--text);background:transparent;
+  padding:0.9rem 2.2rem;border-radius:2px;
+  cursor:pointer;border:1px solid var(--border2);
+  transition:border-color 0.2s,transform 0.2s;text-decoration:none;margin-left:1rem;
+}
+.hero-cta-ghost:hover{border-color:var(--muted2);transform:translateY(-1px)}
+.hero-scroll{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:0.5rem;
+  font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);
+}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,transparent,var(--muted));animation:scrollPulse 2s ease infinite}
+@keyframes scrollPulse{0%,100%{opacity:0.3}50%{opacity:1}}
+
+/* ─── METRICS STRIP ─── */
+.metrics-strip{
+  background:var(--surface);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:2.5rem 3rem;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;
+}
+.metric{text-align:center}
+.metric-num{
+  font-family:var(--font-d);font-size:3rem;font-weight:300;
+  color:var(--text);line-height:1;margin-bottom:0.4rem;
+}
+.metric-num span{color:var(--accent)}
+.metric-label{font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
+
+/* ─── GENERIC SECTION LAYOUT ─── */
+.section-inner{
+  max-width:1100px;margin:0 auto;
+  padding:7rem 3rem;
+}
+.section-eyebrow{
+  font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.5rem;display:block;
+}
+.section-title{
+  font-family:var(--font-d);
+  font-size:clamp(2.5rem,5vw,4rem);
+  font-weight:300;letter-spacing:-0.02em;line-height:1.1;
+  color:var(--text);margin-bottom:1.5rem;
+}
+.section-title em{font-style:italic;color:var(--accent)}
+.section-body{
+  font-size:1.05rem;color:var(--muted2);line-height:1.8;max-width:620px;font-weight:300;
+}
+
+/* ─── ABOUT PAGE ─── */
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:5rem;
+  align-items:start;margin-top:4rem;
+}
+.about-text p{font-size:1rem;color:var(--muted2);line-height:1.85;margin-bottom:1.25rem;font-weight:300}
+.about-text p strong{color:var(--text);font-weight:500}
+.about-cards{display:flex;flex-direction:column;gap:1rem}
+.about-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:4px;padding:1.5rem 1.75rem;
+  transition:border-color 0.25s;
+}
+.about-card:hover{border-color:var(--border2)}
+.about-card-icon{
+  font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:0.75rem;display:block;
+}
+.about-card h3{
+  font-family:var(--font-d);font-size:1.4rem;font-weight:400;
+  color:var(--text);margin-bottom:0.5rem;
+}
+.about-card p{font-size:0.9rem;color:var(--muted);line-height:1.7}
+
+/* ─── TEAM BADGES ─── */
+.team-row{display:flex;gap:1rem;flex-wrap:wrap;margin-top:2.5rem}
+.team-badge{
+  display:flex;align-items:center;gap:0.75rem;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:2px;padding:0.75rem 1.25rem;
+}
+.team-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--accent-dim);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-d);font-size:0.95rem;color:var(--accent);font-weight:500;
+}
+.team-info{display:flex;flex-direction:column}
+.team-name{font-size:0.88rem;font-weight:500;color:var(--text)}
+.team-role{font-size:0.75rem;color:var(--muted)}
+
+/* ─── DIVIDER ─── */
+.divider{height:1px;background:var(--border);margin:0 3rem}
+
+/* ─── SERVICES PAGE ─── */
+.services-hero{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:8rem 3rem 5rem;
+}
+.services-hero-inner{max-width:1100px;margin:0 auto}
+.rag-explainer{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;
+  border:1px solid var(--border);border-radius:4px;
+  margin-top:4rem;overflow:hidden;
+}
+.rag-col{padding:2rem 1.75rem;border-right:1px solid var(--border)}
+.rag-col:last-child{border-right:none}
+.rag-num{font-family:var(--font-d);font-size:4rem;font-weight:300;color:var(--border2);line-height:1;margin-bottom:1rem}
+.rag-col h3{font-family:var(--font-d);font-size:1.5rem;font-weight:400;color:var(--text);margin-bottom:0.75rem}
+.rag-col p{font-size:0.88rem;color:var(--muted);line-height:1.7}
+
+.services-list{max-width:1100px;margin:0 auto;padding:5rem 3rem}
+.service-item{
+  display:grid;grid-template-columns:80px 1fr;gap:2.5rem;
+  padding:2.5rem 0;border-bottom:1px solid var(--border);
+  transition:padding-left 0.3s ease;
+}
+.service-item:hover{padding-left:1rem}
+.service-item:first-child{border-top:1px solid var(--border)}
+.service-num{
+  font-family:var(--font-d);font-size:1.1rem;font-weight:300;
+  color:var(--muted);padding-top:0.2rem;letter-spacing:0.05em;
+}
+.service-content h3{
+  font-family:var(--font-d);font-size:1.8rem;font-weight:400;
+  color:var(--text);margin-bottom:0.75rem;letter-spacing:-0.01em;
+}
+.service-content p{font-size:0.93rem;color:var(--muted2);line-height:1.75;max-width:580px}
+.service-tags{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{
+  font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--muted);border:1px solid var(--border);
+  padding:0.3rem 0.8rem;border-radius:100px;
+}
+
+.deploy-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--border);margin:0 3rem 5rem;
+  border-radius:4px;overflow:hidden;
+}
+.deploy-card{
+  background:var(--bg);padding:2.5rem 2rem;
+  transition:background 0.2s;
+}
+.deploy-card:hover{background:var(--surface)}
+.deploy-card.rec{background:var(--surface2)}
+.deploy-badge{
+  display:inline-block;
+  font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--accent);border:1px solid rgba(201,169,110,0.3);
+  padding:0.2rem 0.7rem;border-radius:100px;margin-bottom:1.25rem;
+}
+.deploy-card h3{font-family:var(--font-d);font-size:1.5rem;font-weight:400;color:var(--text);margin-bottom:0.75rem}
+.deploy-card p{font-size:0.88rem;color:var(--muted);line-height:1.7}
+
+/* ─── USE CASES PAGE ─── */
+.uc-header{
+  padding:8rem 3rem 4rem;border-bottom:1px solid var(--border);
+  background:var(--surface);
+}
+.uc-header-inner{max-width:1100px;margin:0 auto}
+.uc-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:var(--border);margin:0;
+}
+.uc-card{
+  background:var(--bg);padding:3rem;
+  transition:background 0.25s;cursor:default;
+}
+.uc-card:hover{background:var(--surface)}
+.uc-icon{
+  width:48px;height:48px;border-radius:2px;
+  background:var(--accent-dim);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.5rem;
+}
+.uc-icon svg{width:22px;height:22px;stroke:var(--accent);fill:none;stroke-width:1.5}
+.uc-card h3{font-family:var(--font-d);font-size:1.5rem;font-weight:400;color:var(--text);margin-bottom:0.75rem}
+.uc-card p{font-size:0.9rem;color:var(--muted2);line-height:1.75}
+.uc-result{
+  margin-top:1.25rem;padding:0.75rem 1rem;
+  background:var(--surface);border-left:2px solid var(--accent);border-radius:0 2px 2px 0;
+}
+.uc-result-label{font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:0.2rem}
+.uc-result-text{font-size:0.88rem;color:var(--muted2)}
+
+.uc-bottom{
+  max-width:1100px;margin:0 auto;
+  padding:5rem 3rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;
+}
+.uc-stat-list{display:flex;flex-direction:column;gap:1.5rem}
+.uc-stat{display:flex;align-items:baseline;gap:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.uc-stat:last-child{border-bottom:none}
+.uc-stat-num{font-family:var(--font-d);font-size:2.5rem;font-weight:300;color:var(--accent);min-width:80px}
+.uc-stat-desc{font-size:0.9rem;color:var(--muted2);line-height:1.6}
+
+/* ─── CONTACT PAGE ─── */
+.contact-layout{
+  max-width:1100px;margin:0 auto;
+  padding:8rem 3rem 6rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:6rem;
+  align-items:start;
+}
+.contact-left h2{font-family:var(--font-d);font-size:3.5rem;font-weight:300;color:var(--text);letter-spacing:-0.02em;line-height:1.1;margin-bottom:1.5rem}
+.contact-left p{font-size:0.95rem;color:var(--muted2);line-height:1.8;margin-bottom:2.5rem;font-weight:300}
+.contact-info{display:flex;flex-direction:column;gap:1rem}
+.contact-info-item{
+  display:flex;align-items:center;gap:1rem;
+  font-size:0.88rem;color:var(--muted2);
+}
+.contact-info-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent);flex-shrink:0;
+}
+
+.cal-section{margin-bottom:2.5rem}
+.cal-title{
+  font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.25rem;display:block;
+}
+.cal-book-btn{
+  display:inline-flex;align-items:center;gap:0.75rem;
+  font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:500;
+  color:var(--text);background:var(--surface);
+  padding:1rem 1.75rem;border-radius:2px;
+  cursor:pointer;border:1px solid var(--border2);
+  transition:border-color 0.2s,background 0.2s;text-decoration:none;width:100%;
+  justify-content:center;
+}
+.cal-book-btn:hover{border-color:var(--accent);background:var(--accent-dim)}
+.cal-book-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5}
+
+.cal-slots{margin-top:1.5rem}
+.cal-slots-label{font-size:0.78rem;color:var(--muted);margin-bottom:0.75rem;text-align:center}
+.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem}
+.time-slot{
+  text-align:center;padding:0.6rem 0.25rem;
+  border:1px solid var(--border);border-radius:2px;
+  font-size:0.82rem;color:var(--muted2);cursor:pointer;
+  transition:all 0.18s;
+}
+.time-slot:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.time-slot.selected{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+
+.contact-form{display:flex;flex-direction:column;gap:1.25rem}
+.form-group{display:flex;flex-direction:column;gap:0.4rem}
+.form-label{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
+.form-input,.form-textarea,.form-select{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:2px;padding:0.85rem 1rem;
+  font-family:var(--font-s);font-size:0.93rem;color:var(--text);
+  transition:border-color 0.2s;width:100%;outline:none;
+  -webkit-appearance:none;
+}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--muted)}
+.form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--muted2)}
+.form-textarea{resize:vertical;min-height:120px;line-height:1.6}
+.form-select{cursor:pointer;color:var(--muted2)}
+.form-select option{background:var(--surface)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.submit-btn{
+  background:var(--text);color:var(--bg);
+  border:none;border-radius:2px;padding:1rem 2rem;
+  font-family:var(--font-s);font-size:0.82rem;
+  letter-spacing:0.12em;text-transform:uppercase;font-weight:600;
+  cursor:pointer;transition:opacity 0.2s,transform 0.2s;
+  margin-top:0.5rem;
+}
+.submit-btn:hover{opacity:0.88;transform:translateY(-1px)}
+.form-note{font-size:0.75rem;color:var(--muted);line-height:1.6}
+
+/* ─── FOOTER ─── */
+footer{
+  border-top:1px solid var(--border);
+  padding:3rem;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem;
+}
+.footer-logo{font-family:var(--font-d);font-size:1.2rem;font-weight:400;color:var(--muted)}
+.footer-logo span{color:var(--accent)}
+.footer-copy{font-size:0.78rem;color:var(--muted);letter-spacing:0.05em}
+.footer-links{display:flex;gap:1.5rem}
+.footer-links a{font-size:0.78rem;color:var(--muted);text-decoration:none;transition:color 0.2s}
+.footer-links a:hover{color:var(--text)}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  nav{padding:1.25rem 1.5rem}
+  .metrics-strip{grid-template-columns:1fr 1fr;padding:2rem 1.5rem}
+  .about-grid,.uc-grid,.deploy-grid,.contact-layout{grid-template-columns:1fr}
+  .uc-bottom{grid-template-columns:1fr}
+  .rag-explainer{grid-template-columns:1fr}
+  .rag-col{border-right:none;border-bottom:1px solid var(--border)}
+  .rag-col:last-child{border-bottom:none}
+  .section-inner,.services-list,.uc-header{padding-left:1.5rem;padding-right:1.5rem}
+  .services-hero{padding:6rem 1.5rem 3rem}
+  .divider{margin:0 1.5rem}
+  .deploy-grid{margin:0 1.5rem 3rem}
+  .contact-layout{padding:6rem 1.5rem 4rem;gap:3rem}
+  footer{padding:2rem 1.5rem;flex-direction:column;align-items:flex-start}
+  .form-row{grid-template-columns:1fr}
+}
+
+/* ─── TRANSITIONS ─── */
+section{animation:fadeIn 0.5s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a class="nav-logo" onclick="showSection('home')">Vecter<span>AI</span></a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <div class="drawer-panel">
+    <ul class="drawer-nav">
+      <li><a onclick="showSection('home')" data-target="home">Home</a></li>
+      <li><a onclick="showSection('about')" data-target="about">About Us</a></li>
+      <li><a onclick="showSection('services')" data-target="services">Services</a></li>
+      <li><a onclick="showSection('usecases')" data-target="usecases">Use Cases</a></li>
+      <li><a onclick="showSection('contact')" data-target="contact">Contact Us</a></li>
+    </ul>
+    <p class="drawer-tagline">Private intelligence infrastructure<br>for the modern enterprise.</p>
+  </div>
+</div>
+
+<!-- ══════════════════ HOME ══════════════════ -->
+<section id="home" class="active">
+
+  <!-- HERO -->
+  <div class="hero">
+    <!-- Replace YOUR_VIDEO.mp4 with your downloaded Pexels/Coverr video path -->
+    <video id="hero-video" autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.25;pointer-events:none">
+      <source src="hero-bg.mp4" type="video/mp4">
+    </video>
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-content">
+      <span class="hero-eyebrow">AI Consulting & Product Studio</span>
+      <h1 class="hero-title">Vecter<em>AI</em></h1>
+      <p class="hero-sub">Private intelligence infrastructure for companies that want to lead — not follow. Tailored AI systems built around your data, your processes, your people.</p>
+      <div style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0.75rem">
+        <button class="hero-cta" onclick="showSection('services')">Explore Services</button>
+        <button class="hero-cta-ghost" onclick="showSection('contact')">Book a Call</button>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </div>
+
+  <!-- METRICS -->
+  <div class="metrics-strip">
+    <div class="metric">
+      <div class="metric-num">87<span>%</span></div>
+      <div class="metric-label">Faster document retrieval</div>
+    </div>
+    <div class="metric">
+      <div class="metric-num">2.5<span>h</span></div>
+      <div class="metric-label">Saved per person per day</div>
+    </div>
+    <div class="metric">
+      <div class="metric-num">65<span>%</span></div>
+      <div class="metric-label">Reduction in onboarding time</div>
+    </div>
+    <div class="metric">
+      <div class="metric-num">&lt;60<span>s</span></div>
+      <div class="metric-label">Any document found & summarised</div>
+    </div>
+  </div>
+
+  <!-- HOME INTRO -->
+  <div class="section-inner">
+    <span class="section-eyebrow">What We Do</span>
+    <h2 class="section-title">Your organisation holds<br>more intelligence than it<br><em>can currently access.</em></h2>
+    <p class="section-body">Contracts buried in folders. Decisions lost in emails. Knowledge that walks out the door when people leave. We fix this — permanently. Our RAG-first approach makes your existing knowledge instantly searchable, connectable, and useful — then we build custom models and automation on top.</p>
+    <div style="margin-top:3rem;display:flex;gap:1rem;flex-wrap:wrap">
+      <button class="hero-cta" style="background:transparent;color:var(--text);border:1px solid var(--border2)" onclick="showSection('services')">View Services →</button>
+      <button class="hero-cta" style="background:transparent;color:var(--accent);border:1px solid rgba(201,169,110,0.3)" onclick="showSection('usecases')">See Use Cases →</button>
+    </div>
+  </div>
+
+  <!-- CONNECTING LOGOS ROW -->
+  <div style="border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:2rem 3rem;background:var(--surface)">
+    <div style="max-width:1100px;margin:0 auto">
+      <p style="font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:1.5rem">We connect to the tools your team already uses</p>
+      <div style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:2.5rem">
+        <span style="font-size:0.88rem;color:var(--muted2)">Microsoft 365</span>
+        <span style="color:var(--border2)">·</span>
+        <span style="font-size:0.88rem;color:var(--muted2)">Google Workspace</span>
+        <span style="color:var(--border2)">·</span>
+        <span style="font-size:0.88rem;color:var(--muted2)">Slack</span>
+        <span style="color:var(--border2)">·</span>
+        <span style="font-size:0.88rem;color:var(--muted2)">WhatsApp Business</span>
+        <span style="color:var(--border2)">·</span>
+        <span style="font-size:0.88rem;color:var(--muted2)">SharePoint</span>
+        <span style="color:var(--border2)">·</span>
+        <span style="font-size:0.88rem;color:var(--muted2)">Notion</span>
+        <span style="color:var(--border2)">·</span>
+        <span style="font-size:0.88rem;color:var(--muted2)">Dropbox</span>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-logo">Vecter<span>AI</span></span>
+    <div class="footer-links">
+      <a onclick="showSection('about')">About</a>
+      <a onclick="showSection('services')">Services</a>
+      <a onclick="showSection('contact')">Contact</a>
+    </div>
+    <span class="footer-copy">© 2025 VecterAI. Pontresina, Switzerland.</span>
+  </footer>
+
+</section>
+
+<!-- ══════════════════ ABOUT ══════════════════ -->
+<section id="about">
+
+  <div class="section-inner">
+    <span class="section-eyebrow">About VecterAI</span>
+    <h2 class="section-title">We are the generation<br>that builds what<br><em>AI promises.</em></h2>
+    <p class="section-body">VecterAI is an AI consulting and product studio founded by master's students at IE University Madrid. We don't believe in AI for the sake of it — we believe in precision-built systems that create tangible, measurable advantage for the businesses that deploy them.</p>
+
+    <div class="about-grid">
+      <div class="about-text">
+        <p>Most companies know they should be doing something with AI. The challenge isn't access — it's <strong>direction, trust, and the capacity to build it right</strong>. That's where we come in.</p>
+        <p>As MTGA graduates at <strong>IE University</strong>, one of Europe's top business schools, we sit at the intersection of business acumen and technical depth. We don't outsource the hard parts. We build everything ourselves — architecture, pipelines, models, and interfaces.</p>
+        <p>Every engagement begins with a discovery session. We map how information flows through your organisation, identify where intelligence is being lost, and design a system that brings it back — permanently. Then we execute.</p>
+        <p>Our clients are mid-sized European businesses that want to compete with larger players. Companies that don't have a 20-person AI team internally, but want the same infrastructure. That is exactly what we build for them — <strong>privately, isolated, and tailored</strong> to their domain.</p>
+
+        <div class="team-row">
+          <div class="team-badge">
+            <div class="team-avatar">F</div>
+            <div class="team-info">
+              <span class="team-name">Ferdinand</span>
+              <span class="team-role">Founder & Technical Lead</span>
+            </div>
+          </div>
+          <div class="team-badge">
+            <div class="team-avatar" style="background:var(--blue-dim);color:var(--blue)">IE</div>
+            <div class="team-info">
+              <span class="team-name">IE University</span>
+              <span class="team-role">MTGA Program, Madrid</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-cards">
+        <div class="about-card">
+          <span class="about-card-icon">01 — Foundation</span>
+          <h3>RAG-First Architecture</h3>
+          <p>Every system we build starts with a private intelligence layer — all your documents, emails, and data indexed, connected, and semantically searchable.</p>
+        </div>
+        <div class="about-card">
+          <span class="about-card-icon">02 — Stack</span>
+          <h3>Modern, Proven Technology</h3>
+          <p>Next.js, Supabase, pgvector, Claude API, and n8n. We use what works — not what's fashionable. Every choice is justified, every dependency justified.</p>
+        </div>
+        <div class="about-card">
+          <span class="about-card-icon">03 — Principle</span>
+          <h3>Your Data Stays Yours</h3>
+          <p>Isolated deployments, configurable processing locations, and read-only integrations. We touch nothing we don't need. Your data never trains anyone's model.</p>
+        </div>
+        <div class="about-card">
+          <span class="about-card-icon">04 — Model</span>
+          <h3>Consulting + Product</span>
+          <h3>
+          <p>We don't just consult — we build and deploy. Every engagement ends with a live, operational system, not a slide deck of recommendations.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-logo">Vecter<span>AI</span></span>
+    <div class="footer-links">
+      <a onclick="showSection('home')">Home</a>
+      <a onclick="showSection('services')">Services</a>
+      <a onclick="showSection('contact')">Contact</a>
+    </div>
+    <span class="footer-copy">© 2025 VecterAI. Pontresina, Switzerland.</span>
+  </footer>
+</section>
+
+<!-- ══════════════════ SERVICES ══════════════════ -->
+<section id="services">
+
+  <div class="services-hero">
+    <div class="services-hero-inner">
+      <span class="section-eyebrow">Our Services</span>
+      <h2 class="section-title">RAG is the foundation.<br>Everything else is built<br><em>on top of it.</em></h2>
+      <p class="section-body" style="max-width:600px">Retrieval-Augmented Generation isn't a feature — it's an infrastructure decision. Once your organisation has a private intelligence layer, every model, automation, and product you want to build becomes dramatically faster and more accurate.</p>
+
+      <div class="rag-explainer">
+        <div class="rag-col">
+          <div class="rag-num">01</div>
+          <h3>Your Knowledge</h3>
+          <p>Every document, email, note, voice memo, and recording your organisation has ever produced — indexed, connected, and accessible in a private vector database.</p>
+        </div>
+        <div class="rag-col">
+          <div class="rag-num">02</div>
+          <h3>Retrieval</h3>
+          <p>A question is asked. The system finds the most semantically relevant content from your private corpus — not the internet. Your specific history and context.</p>
+        </div>
+        <div class="rag-col">
+          <div class="rag-num">03</div>
+          <h3>Generation</h3>
+          <p>The AI answers using retrieved content only. Specific to your deals, your people, your numbers, your history. Always accurate. Never generic.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="services-list">
+    <div class="service-item">
+      <div class="service-num">01</div>
+      <div class="service-content">
+        <h3>Private RAG Infrastructure</h3>
+        <p>We build your organisation's intelligence layer from the ground up. Every source — email, files, messages, voice — connected, processed through our six-phase pipeline, and semantically indexed. The foundation every other service sits on.</p>
+        <div class="service-tags">
+          <span class="tag">pgvector</span>
+          <span class="tag">Claude API</span>
+          <span class="tag">OCR & Transcription</span>
+          <span class="tag">Entity Extraction</span>
+          <span class="tag">Delta Sync</span>
+        </div>
+      </div>
+    </div>
+    <div class="service-item">
+      <div class="service-num">02</div>
+      <div class="service-content">
+        <h3>Custom AI Model Development</h3>
+        <p>With the RAG foundation in place, our data science team builds bespoke models tailored to your domain — classification, prediction, anomaly detection, valuation models. We don't use generic off-the-shelf models. We build yours.</p>
+        <div class="service-tags">
+          <span class="tag">Supervised Learning</span>
+          <span class="tag">Fine-Tuning</span>
+          <span class="tag">XGBoost</span>
+          <span class="tag">Forecasting</span>
+          <span class="tag">Anomaly Detection</span>
+        </div>
+      </div>
+    </div>
+    <div class="service-item">
+      <div class="service-num">03</div>
+      <div class="service-content">
+        <h3>Intelligent Agent Systems</h3>
+        <p>Multi-agent architectures that run autonomously — monitoring, reporting, drafting, alerting, routing. Agents that read your emails, brief you before meetings, flag what needs attention, and handle the repetitive so your team doesn't have to.</p>
+        <div class="service-tags">
+          <span class="tag">n8n Orchestration</span>
+          <span class="tag">Claude Agents</span>
+          <span class="tag">Telegram Integration</span>
+          <span class="tag">PWA Delivery</span>
+        </div>
+      </div>
+    </div>
+    <div class="service-item">
+      <div class="service-num">04</div>
+      <div class="service-content">
+        <h3>Document Intelligence & Automation</h3>
+        <p>Your existing document library — contracts, invoices, NDAs, reports — automatically classified, summarised, cross-linked, and surfaced the moment it matters. Pre-meeting briefings. Commitment tracking. Knowledge onboarding.</p>
+        <div class="service-tags">
+          <span class="tag">PDF Parsing</span>
+          <span class="tag">Contract Analysis</span>
+          <span class="tag">Auto-Classification</span>
+          <span class="tag">Multilingual</span>
+        </div>
+      </div>
+    </div>
+    <div class="service-item">
+      <div class="service-num">05</div>
+      <div class="service-content">
+        <h3>Full-Stack AI Product Development</h3>
+        <p>End-to-end product builds — internal command centres, customer-facing AI tools, mobile PWAs, dashboards, and reporting systems. From architecture decision records to live deployment. We ship complete products, not prototypes.</p>
+        <div class="service-tags">
+          <span class="tag">Next.js</span>
+          <span class="tag">Supabase</span>
+          <span class="tag">TypeScript</span>
+          <span class="tag">Tailwind</span>
+          <span class="tag">Hetzner VPS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div style="max-width:1100px;margin:0 auto;padding:3rem 3rem 1rem">
+    <span class="section-eyebrow">Deployment Model</span>
+    <h3 style="font-family:var(--font-d);font-size:2rem;font-weight:300;color:var(--text);margin-bottom:2rem">Where your data is processed — <em style="font-style:italic;color:var(--accent)">you decide.</em></h3>
+  </div>
+  <div class="deploy-grid">
+    <div class="deploy-card">
+      <h3>Cloud</h3>
+      <p>Documents processed via frontier AI models. Maximum AI quality. Original files never leave your source system. Anthropic's terms prohibit training on API inputs — your data never trains any model.</p>
+    </div>
+    <div class="deploy-card rec">
+      <span class="deploy-badge">Recommended</span>
+      <h3>Hybrid</h3>
+      <p>Operational documents — meeting notes, correspondence, reports — processed via cloud for maximum quality. Sensitive documents — NDAs, board materials, financials — processed locally. Routing is automatic.</p>
+    </div>
+    <div class="deploy-card">
+      <h3>Local</h3>
+      <p>All AI processing runs on infrastructure within your own environment. Zero data leaves at any point. Satisfies the strictest regulatory and confidentiality requirements. Complete sovereignty.</p>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-logo">Vecter<span>AI</span></span>
+    <div class="footer-links">
+      <a onclick="showSection('home')">Home</a>
+      <a onclick="showSection('usecases')">Use Cases</a>
+      <a onclick="showSection('contact')">Contact</a>
+    </div>
+    <span class="footer-copy">© 2025 VecterAI. Pontresina, Switzerland.</span>
+  </footer>
+</section>
+
+<!-- ══════════════════ USE CASES ══════════════════ -->
+<section id="usecases">
+
+  <div class="uc-header">
+    <div class="uc-header-inner">
+      <span class="section-eyebrow">Use Cases</span>
+      <h2 class="section-title">The tools are here. The gap<br>is knowing how to make<br><em>them yours.</em></h2>
+      <p class="section-body" style="max-width:640px">Generic AI tools give generic answers. The organisations winning with AI aren't using ChatGPT for everything — they've built private systems trained on their own data, tuned to their domain, integrated into their workflow. Here's what that looks like in practice.</p>
+    </div>
+  </div>
+
+  <div class="uc-grid">
+    <div class="uc-card">
+      <div class="uc-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <h3>Professional Services & Law</h3>
+      <p>Firms managing hundreds of client files, contracts, and precedents lose hours daily searching through versions and folders. A RAG system indexes every document — searchable by meaning, not just file name. Associates brief themselves in minutes, not hours.</p>
+      <div class="uc-result">
+        <div class="uc-result-label">Outcome</div>
+        <div class="uc-result-text">87% faster document retrieval. New associates productive from day one.</div>
+      </div>
+    </div>
+    <div class="uc-card">
+      <div class="uc-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      </div>
+      <h3>Manufacturing & Flooring</h3>
+      <p>Complex product catalogues, supplier price lists, installation specifications, and customer histories spread across email and folders. AI agents surface the right spec before a site visit, flag price changes automatically, and generate proposals from historical data.</p>
+      <div class="uc-result">
+        <div class="uc-result-label">Outcome</div>
+        <div class="uc-result-text">Quote generation time reduced by 70%. Zero missed supplier updates.</div>
+      </div>
+    </div>
+    <div class="uc-card">
+      <div class="uc-icon">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
+      <h3>Private Asset Management</h3>
+      <p>Investment memos, board packs, valuation reports, and LP updates distributed across inboxes and drives. AI indexes and connects every document, extracts financial figures and entity relationships, and delivers pre-meeting intelligence before every call.</p>
+      <div class="uc-result">
+        <div class="uc-result-label">Outcome</div>
+        <div class="uc-result-text">Portfolio monitoring automated. Partner briefing time from 2h to 12 minutes.</div>
+      </div>
+    </div>
+    <div class="uc-card">
+      <div class="uc-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <h3>Real Estate Development</h3>
+      <p>Projects spanning years generate thousands of emails, planning documents, contractor conversations, and legal correspondences. RAG makes every commitment traceable. Agents monitor project threads and surface blockers before they become delays.</p>
+      <div class="uc-result">
+        <div class="uc-result-label">Outcome</div>
+        <div class="uc-result-text">Commitment tracking automated. Project director briefed daily in under 3 minutes.</div>
+      </div>
+    </div>
+    <div class="uc-card">
+      <div class="uc-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
+      <h3>Healthcare & Equine / Veterinary</h3>
+      <p>Medical histories, treatment protocols, supplier records, and regulatory documents need to be instantly accessible and linkable. AI classifies every record, surfaces relevant history before appointments, and maintains full audit trails automatically.</p>
+      <div class="uc-result">
+        <div class="uc-result-label">Outcome</div>
+        <div class="uc-result-text">Patient history surfaced in under 10 seconds. Regulatory compliance maintained passively.</div>
+      </div>
+    </div>
+    <div class="uc-card">
+      <div class="uc-icon">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <h3>The AI Landscape Is Moving Fast</h3>
+      <p>Tools are commoditising. Generic AI assistants are everywhere. The competitive advantage now sits in the layer below the tool — the private intelligence infrastructure that gives AI your context, your history, your domain. The window to build this before your competitors is open. Not indefinitely.</p>
+      <div class="uc-result">
+        <div class="uc-result-label">The Opportunity</div>
+        <div class="uc-result-text">First-movers in each industry are building infrastructure that becomes a structural moat.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="uc-bottom">
+    <div>
+      <span class="section-eyebrow">What Organisations Report</span>
+      <h3 style="font-family:var(--font-d);font-size:2.5rem;font-weight:300;color:var(--text);letter-spacing:-0.02em;margin-bottom:2rem;line-height:1.1">Numbers from<br><em style="font-style:italic;color:var(--accent)">Phase 1 deployments.</em></h3>
+      <p style="font-size:0.92rem;color:var(--muted2);line-height:1.75;font-weight:300">These figures reflect efficiency gains reported within the first 30 days of going live — before any custom models or automations are layered on top. Phase 1 is the intelligence foundation only.</p>
+    </div>
+    <div class="uc-stat-list">
+      <div class="uc-stat">
+        <div class="uc-stat-num">87%</div>
+        <div class="uc-stat-desc">Faster document and knowledge retrieval across all connected sources</div>
+      </div>
+      <div class="uc-stat">
+        <div class="uc-stat-num">2.5h</div>
+        <div class="uc-stat-desc">Saved per person per working day — time previously spent searching</div>
+      </div>
+      <div class="uc-stat">
+        <div class="uc-stat-num">65%</div>
+        <div class="uc-stat-desc">Reduction in new hire onboarding time — context is in the system</div>
+      </div>
+      <div class="uc-stat">
+        <div class="uc-stat-num">&lt;60s</div>
+        <div class="uc-stat-desc">Any document found, retrieved, and summarised from any source</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-logo">Vecter<span>AI</span></span>
+    <div class="footer-links">
+      <a onclick="showSection('home')">Home</a>
+      <a onclick="showSection('services')">Services</a>
+      <a onclick="showSection('contact')">Contact</a>
+    </div>
+    <span class="footer-copy">© 2025 VecterAI. Pontresina, Switzerland.</span>
+  </footer>
+</section>
+
+<!-- ══════════════════ CONTACT ══════════════════ -->
+<section id="contact">
+  <div class="contact-layout">
+    <div class="contact-left">
+      <span class="section-eyebrow">Contact Us</span>
+      <h2>Let's talk about<br><em style="font-style:italic;color:var(--accent)">what you're building.</em></h2>
+      <p>We start every engagement with a 30-minute discovery call — no decks, no sales process. Just a direct conversation about where your organisation is and where you want it to be.</p>
+
+      <div class="cal-section">
+        <span class="cal-title">Book a Discovery Call</span>
+        <a class="cal-book-btn" href="https://calendar.google.com/calendar/appointments/schedules" target="_blank">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Open Google Calendar Booking
+        </a>
+
+        <div class="cal-slots" style="margin-top:1.5rem">
+          <p class="cal-slots-label" style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem">Or select a preferred time window</p>
+          <div class="time-grid">
+            <div class="time-slot" onclick="selectSlot(this)">Mon 09:00</div>
+            <div class="time-slot" onclick="selectSlot(this)">Mon 11:00</div>
+            <div class="time-slot" onclick="selectSlot(this)">Mon 14:00</div>
+            <div class="time-slot" onclick="selectSlot(this)">Tue 10:00</div>
+            <div class="time-slot" onclick="selectSlot(this)">Tue 15:00</div>
+            <div class="time-slot" onclick="selectSlot(this)">Wed 09:00</div>
+            <div class="time-slot" onclick="selectSlot(this)">Wed 13:00</div>
+            <div class="time-slot" onclick="selectSlot(this)">Thu 10:00</div>
+            <div class="time-slot" onclick="selectSlot(this)">Thu 16:00</div>
+            <div class="time-slot" onclick="selectSlot(this)">Fri 09:00</div>
+            <div class="time-slot" onclick="selectSlot(this)">Fri 11:00</div>
+            <div class="time-slot" onclick="selectSlot(this)">Fri 14:00</div>
+          </div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:0.75rem;text-align:center">CET · Business hours · 30 minutes</p>
+        </div>
+      </div>
+
+      <div class="contact-info">
+        <div class="contact-info-item">
+          <div class="contact-info-dot"></div>
+          <span>VecterAI · Via D'arovens 1, 7504 Pontresina, Switzerland</span>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-dot"></div>
+          <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e8808d848487a89e8d8b9c8d9a8981c68b8785">[email&#160;protected]</a></span>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-dot"></div>
+          <span>Serving clients across Europe</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <span class="section-eyebrow" style="margin-bottom:1.5rem;display:block">Send a Message</span>
+      <div class="contact-form" id="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input class="form-input" type="text" placeholder="Anna" id="cf-fname">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input class="form-input" type="text" placeholder="Müller" id="cf-lname">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Company</label>
+          <input class="form-input" type="text" placeholder="Your company name" id="cf-company">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" placeholder="anna@company.com" id="cf-email">
+        </div>
+        <div class="form-group">
+          <label class="form-label">What best describes your situation?</label>
+          <select class="form-select form-input" id="cf-type">
+            <option value="" disabled selected>Select an option</option>
+            <option>We want to start with RAG infrastructure</option>
+            <option>We need a custom AI model or automation</option>
+            <option>We want an end-to-end AI product built</option>
+            <option>We're exploring what's possible — early stage</option>
+            <option>Something else entirely</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tell us what's on your mind</label>
+          <textarea class="form-textarea" placeholder="Describe your current challenge, what you've tried, and what an ideal outcome looks like..." id="cf-message"></textarea>
+        </div>
+        <p class="form-note">We respond to every message within one business day. Discovery calls are 30 minutes and completely free of charge.</p>
+        <button class="submit-btn" onclick="submitForm()">Send Message →</button>
+        <div id="form-success" style="display:none;text-align:center;padding:1.5rem;border:1px solid rgba(201,169,110,0.3);border-radius:2px;background:var(--accent-dim)">
+          <p style="font-family:var(--font-d);font-size:1.3rem;color:var(--accent);margin-bottom:0.5rem">Message received.</p>
+          <p style="font-size:0.88rem;color:var(--muted2)">We'll be in touch within one business day.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-logo">Vecter<span>AI</span></span>
+    <div class="footer-links">
+      <a onclick="showSection('home')">Home</a>
+      <a onclick="showSection('about')">About</a>
+      <a onclick="showSection('services')">Services</a>
+    </div>
+    <span class="footer-copy">© 2025 VecterAI. Pontresina, Switzerland.</span>
+  </footer>
+</section>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ─── NAVIGATION ───
+const sections = ['home','about','services','usecases','contact'];
+let currentSection = 'home';
+
+function showSection(id) {
+  sections.forEach(s => {
+    const el = document.getElementById(s);
+    el.classList.remove('active');
+    el.style.display = 'none';
+  });
+  const el = document.getElementById(id);
+  el.style.display = 'block';
+  requestAnimationFrame(() => el.classList.add('active'));
+  currentSection = id;
+  window.scrollTo({top:0,behavior:'smooth'});
+  closeDrawer();
+  updateActiveNav(id);
+}
+
+function updateActiveNav(id) {
+  document.querySelectorAll('.drawer-nav a').forEach(a => {
+    a.classList.toggle('active', a.dataset.target === id);
+  });
+}
+
+// ─── HAMBURGER ───
+const hamburger = document.getElementById('hamburger');
+const drawer = document.getElementById('drawer');
+const overlay = document.getElementById('drawer-overlay');
+let drawerOpen = false;
+
+function toggleDrawer() {
+  drawerOpen = !drawerOpen;
+  hamburger.classList.toggle('open', drawerOpen);
+  drawer.classList.toggle('open', drawerOpen);
+  document.body.style.overflow = drawerOpen ? 'hidden' : '';
+}
+function closeDrawer() {
+  drawerOpen = false;
+  hamburger.classList.remove('open');
+  drawer.classList.remove('open');
+  document.body.style.overflow = '';
+}
+hamburger.addEventListener('click', toggleDrawer);
+overlay.addEventListener('click', closeDrawer);
+
+// ─── SCROLL NAV ───
+window.addEventListener('scroll', () => {
+  document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ─── VIDEO FALLBACK ───
+(function(){
+  const vid = document.getElementById('hero-video');
+  if(vid){
+    vid.addEventListener('canplay', () => { vid.style.display = 'block'; });
+    vid.load();
+  }
+})();
+
+// ─── CANVAS ANIMATION ───
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes = [], mouse = {x:0,y:0};
+  const NODE_COUNT = 60;
+
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function initNodes() {
+    nodes = [];
+    for (let i = 0; i < NODE_COUNT; i++) {
+      nodes.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 1.5 + 0.5,
+        pulse: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const accent = [201, 169, 110];
+    const blue   = [91, 156, 246];
+
+    nodes.forEach(n => {
+      n.x += n.vx; n.y += n.vy; n.pulse += 0.015;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+    });
+
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 160) {
+          const alpha = (1 - dist/160) * 0.25;
+          const mix = (i + j) % 3 === 0 ? blue : accent;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = `rgba(${mix[0]},${mix[1]},${mix[2]},${alpha})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+    }
+
+    nodes.forEach((n, i) => {
+      const r = n.r + Math.sin(n.pulse) * 0.5;
+      const col = i % 3 === 0 ? accent : blue;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${col[0]},${col[1]},${col[2]},0.7)`;
+      ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  initNodes();
+  draw();
+  window.addEventListener('resize', () => { resize(); initNodes(); });
+  canvas.parentElement.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+})();
+
+// ─── CALENDAR SLOTS ───
+function selectSlot(el) {
+  document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ─── FORM ───
+function submitForm() {
+  const fields = ['cf-fname','cf-lname','cf-email','cf-company','cf-message'];
+  const empty = fields.some(f => !document.getElementById(f).value.trim());
+  if (empty) 
