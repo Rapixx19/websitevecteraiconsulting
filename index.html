@@ -1169,4 +1169,13 @@ function selectSlot(el) {
 function submitForm() {
   const fields = ['cf-fname','cf-lname','cf-email','cf-company','cf-message'];
   const empty = fields.some(f => !document.getElementById(f).value.trim());
-  if (empty) 
+  if (empty) {
+    alert('Please fill in all required fields.');
+    return;
+  }
+  document.getElementById('contact-form').style.display = 'none';
+  document.getElementById('form-success').style.display = 'block';
+}
+</script>
+</body>
+</html> 
