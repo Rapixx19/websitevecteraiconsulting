@@ -468,7 +468,7 @@ section{animation:fadeIn 0.5s ease}
 
 <!-- NAV -->
 <nav id="main-nav">
-  <a class="nav-logo" onclick="showSection('home')">Vecter<span>AI</span></a>
+  <a href="javascript:void(0)" class="nav-logo" onclick="showSection('home')">Vecter<span>AI</span></a>
   <button class="hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
@@ -479,11 +479,11 @@ section{animation:fadeIn 0.5s ease}
   <div class="drawer-overlay" id="drawer-overlay"></div>
   <div class="drawer-panel">
     <ul class="drawer-nav">
-      <li><a onclick="showSection('home')" data-target="home">Home</a></li>
-      <li><a onclick="showSection('about')" data-target="about">About Us</a></li>
-      <li><a onclick="showSection('services')" data-target="services">Services</a></li>
-      <li><a onclick="showSection('usecases')" data-target="usecases">Use Cases</a></li>
-      <li><a onclick="showSection('contact')" data-target="contact">Contact Us</a></li>
+      <li><a href="javascript:void(0)" onclick="showSection('home')" data-target="home">Home</a></li>
+      <li><a href="javascript:void(0)" onclick="showSection('about')" data-target="about">About Us</a></li>
+      <li><a href="javascript:void(0)" onclick="showSection('services')" data-target="services">Services</a></li>
+      <li><a href="javascript:void(0)" onclick="showSection('usecases')" data-target="usecases">Use Cases</a></li>
+      <li><a href="javascript:void(0)" onclick="showSection('contact')" data-target="contact">Contact Us</a></li>
     </ul>
     <p class="drawer-tagline">Private intelligence infrastructure<br>for the modern enterprise.</p>
   </div>
@@ -570,9 +570,9 @@ section{animation:fadeIn 0.5s ease}
   <footer>
     <span class="footer-logo">Vecter<span>AI</span></span>
     <div class="footer-links">
-      <a onclick="showSection('about')">About</a>
-      <a onclick="showSection('services')">Services</a>
-      <a onclick="showSection('contact')">Contact</a>
+      <a href="javascript:void(0)" onclick="showSection('about')">About</a>
+      <a href="javascript:void(0)" onclick="showSection('services')">Services</a>
+      <a href="javascript:void(0)" onclick="showSection('contact')">Contact</a>
     </div>
     <span class="footer-copy">© 2025 VecterAI. Pontresina, Switzerland.</span>
   </footer>
@@ -630,8 +630,7 @@ section{animation:fadeIn 0.5s ease}
         </div>
         <div class="about-card">
           <span class="about-card-icon">04 — Model</span>
-          <h3>Consulting + Product</span>
-          <h3>
+          <h3>Consulting + Product</h3>
           <p>We don't just consult — we build and deploy. Every engagement ends with a live, operational system, not a slide deck of recommendations.</p>
         </div>
       </div>
@@ -641,9 +640,9 @@ section{animation:fadeIn 0.5s ease}
   <footer>
     <span class="footer-logo">Vecter<span>AI</span></span>
     <div class="footer-links">
-      <a onclick="showSection('home')">Home</a>
-      <a onclick="showSection('services')">Services</a>
-      <a onclick="showSection('contact')">Contact</a>
+      <a href="javascript:void(0)" onclick="showSection('home')">Home</a>
+      <a href="javascript:void(0)" onclick="showSection('services')">Services</a>
+      <a href="javascript:void(0)" onclick="showSection('contact')">Contact</a>
     </div>
     <span class="footer-copy">© 2025 VecterAI. Pontresina, Switzerland.</span>
   </footer>
@@ -773,9 +772,9 @@ section{animation:fadeIn 0.5s ease}
   <footer>
     <span class="footer-logo">Vecter<span>AI</span></span>
     <div class="footer-links">
-      <a onclick="showSection('home')">Home</a>
-      <a onclick="showSection('usecases')">Use Cases</a>
-      <a onclick="showSection('contact')">Contact</a>
+      <a href="javascript:void(0)" onclick="showSection('home')">Home</a>
+      <a href="javascript:void(0)" onclick="showSection('usecases')">Use Cases</a>
+      <a href="javascript:void(0)" onclick="showSection('contact')">Contact</a>
     </div>
     <span class="footer-copy">© 2025 VecterAI. Pontresina, Switzerland.</span>
   </footer>
@@ -890,9 +889,9 @@ section{animation:fadeIn 0.5s ease}
   <footer>
     <span class="footer-logo">Vecter<span>AI</span></span>
     <div class="footer-links">
-      <a onclick="showSection('home')">Home</a>
-      <a onclick="showSection('services')">Services</a>
-      <a onclick="showSection('contact')">Contact</a>
+      <a href="javascript:void(0)" onclick="showSection('home')">Home</a>
+      <a href="javascript:void(0)" onclick="showSection('services')">Services</a>
+      <a href="javascript:void(0)" onclick="showSection('contact')">Contact</a>
     </div>
     <span class="footer-copy">© 2025 VecterAI. Pontresina, Switzerland.</span>
   </footer>
@@ -998,9 +997,9 @@ section{animation:fadeIn 0.5s ease}
   <footer>
     <span class="footer-logo">Vecter<span>AI</span></span>
     <div class="footer-links">
-      <a onclick="showSection('home')">Home</a>
-      <a onclick="showSection('about')">About</a>
-      <a onclick="showSection('services')">Services</a>
+      <a href="javascript:void(0)" onclick="showSection('home')">Home</a>
+      <a href="javascript:void(0)" onclick="showSection('about')">About</a>
+      <a href="javascript:void(0)" onclick="showSection('services')">Services</a>
     </div>
     <span class="footer-copy">© 2025 VecterAI. Pontresina, Switzerland.</span>
   </footer>
@@ -1010,6 +1009,20 @@ section{animation:fadeIn 0.5s ease}
 // ─── NAVIGATION ───
 const sections = ['home','about','services','usecases','contact'];
 let currentSection = 'home';
+
+// ─── INIT SECTION VISIBILITY ───
+document.addEventListener('DOMContentLoaded', function() {
+  sections.forEach(function(s) {
+    const el = document.getElementById(s);
+    if (s === 'home') {
+      el.style.display = 'block';
+      el.classList.add('active');
+    } else {
+      el.style.display = 'none';
+      el.classList.remove('active');
+    }
+  });
+});
 
 function showSection(id) {
   sections.forEach(s => {
