@@ -950,47 +950,49 @@ section{animation:fadeIn 0.5s ease}
 
     <div>
       <span class="section-eyebrow" style="margin-bottom:1.5rem;display:block">Send a Message</span>
-      <div class="contact-form" id="contact-form">
+      <form class="contact-form" id="contact-form" action="https://formspree.io/f/ferdinand.straehuber@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="New VecterAI Contact Form Submission">
+        <input type="hidden" name="_next" value="https://websitevecteraiconsulting.vercel.app/?submitted=true">
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">First Name</label>
-            <input class="form-input" type="text" placeholder="Anna" id="cf-fname">
+            <input class="form-input" type="text" placeholder="Anna" name="first_name" id="cf-fname" required>
           </div>
           <div class="form-group">
             <label class="form-label">Last Name</label>
-            <input class="form-input" type="text" placeholder="Müller" id="cf-lname">
+            <input class="form-input" type="text" placeholder="Müller" name="last_name" id="cf-lname" required>
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">Company</label>
-          <input class="form-input" type="text" placeholder="Your company name" id="cf-company">
+          <input class="form-input" type="text" placeholder="Your company name" name="company" id="cf-company" required>
         </div>
         <div class="form-group">
           <label class="form-label">Email</label>
-          <input class="form-input" type="email" placeholder="anna@company.com" id="cf-email">
+          <input class="form-input" type="email" placeholder="anna@company.com" name="email" id="cf-email" required>
         </div>
         <div class="form-group">
           <label class="form-label">What best describes your situation?</label>
-          <select class="form-select form-input" id="cf-type">
+          <select class="form-select form-input" name="inquiry_type" id="cf-type" required>
             <option value="" disabled selected>Select an option</option>
-            <option>We want to start with RAG infrastructure</option>
-            <option>We need a custom AI model or automation</option>
-            <option>We want an end-to-end AI product built</option>
-            <option>We're exploring what's possible — early stage</option>
-            <option>Something else entirely</option>
+            <option value="RAG infrastructure">We want to start with RAG infrastructure</option>
+            <option value="Custom AI model">We need a custom AI model or automation</option>
+            <option value="End-to-end product">We want an end-to-end AI product built</option>
+            <option value="Exploring options">We're exploring what's possible — early stage</option>
+            <option value="Other">Something else entirely</option>
           </select>
         </div>
         <div class="form-group">
           <label class="form-label">Tell us what's on your mind</label>
-          <textarea class="form-textarea" placeholder="Describe your current challenge, what you've tried, and what an ideal outcome looks like..." id="cf-message"></textarea>
+          <textarea class="form-textarea" placeholder="Describe your current challenge, what you've tried, and what an ideal outcome looks like..." name="message" id="cf-message" required></textarea>
         </div>
         <p class="form-note">We respond to every message within one business day. Discovery calls are 30 minutes and completely free of charge.</p>
-        <button class="submit-btn" onclick="submitForm()">Send Message →</button>
+        <button type="submit" class="submit-btn">Send Message →</button>
         <div id="form-success" style="display:none;text-align:center;padding:1.5rem;border:1px solid rgba(201,169,110,0.3);border-radius:2px;background:var(--accent-dim)">
           <p style="font-family:var(--font-d);font-size:1.3rem;color:var(--accent);margin-bottom:0.5rem">Message received.</p>
           <p style="font-size:0.88rem;color:var(--muted2)">We'll be in touch within one business day.</p>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 
@@ -1012,6 +1014,15 @@ let currentSection = 'home';
 
 // ─── INIT SECTION VISIBILITY ───
 document.addEventListener('DOMContentLoaded', function() {
+  // Check if returning from form submission
+  if (window.location.search.includes('submitted=true')) {
+    showSection('contact');
+    document.getElementById('contact-form').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+    // Clean up URL
+    window.history.replaceState({}, '', window.location.pathname);
+    return;
+  }
   sections.forEach(function(s) {
     const el = document.getElementById(s);
     if (s === 'home') {
