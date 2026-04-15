@@ -206,45 +206,66 @@ section.active{display:block}
 
 /* ─── ABOUT PAGE ─── */
 .about-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:5rem;
-  align-items:start;margin-top:4rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:3rem;
+  align-items:start;margin-top:2.5rem;
 }
-.about-text p{font-size:1rem;color:var(--muted2);line-height:1.85;margin-bottom:1.25rem;font-weight:300}
+.about-text p{font-size:0.95rem;color:var(--muted2);line-height:1.75;margin-bottom:1rem;font-weight:300}
 .about-text p strong{color:var(--text);font-weight:500}
-.about-cards{display:flex;flex-direction:column;gap:1rem}
+.about-cards{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
 .about-card{
   background:var(--surface);
   border:1px solid var(--border);
-  border-radius:4px;padding:1.5rem 1.75rem;
+  border-radius:4px;padding:1.25rem 1.5rem;
   transition:border-color 0.25s;
 }
 .about-card:hover{border-color:var(--border2)}
 .about-card-icon{
-  font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:0.75rem;display:block;
+  font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:0.5rem;display:block;
 }
 .about-card h3{
-  font-family:var(--font-d);font-size:1.4rem;font-weight:400;
-  color:var(--text);margin-bottom:0.5rem;
+  font-family:var(--font-d);font-size:1.15rem;font-weight:400;
+  color:var(--text);margin-bottom:0.4rem;
 }
-.about-card p{font-size:0.9rem;color:var(--muted);line-height:1.7}
+.about-card p{font-size:0.8rem;color:var(--muted);line-height:1.6}
 
-/* ─── TEAM BADGES ─── */
-.team-row{display:flex;gap:1rem;flex-wrap:wrap;margin-top:2.5rem}
-.team-badge{
-  display:flex;align-items:center;gap:0.75rem;
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:2px;padding:0.75rem 1.25rem;
+/* ─── TRUSTED BY ─── */
+.trusted-section{
+  margin-top:4rem;
+  padding:2.5rem 3rem;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
 }
-.team-avatar{
-  width:36px;height:36px;border-radius:50%;
-  background:var(--accent-dim);
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-d);font-size:0.95rem;color:var(--accent);font-weight:500;
+.trusted-label{
+  font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--muted);display:block;margin-bottom:1.5rem;text-align:center;
 }
-.team-info{display:flex;flex-direction:column}
-.team-name{font-size:0.88rem;font-weight:500;color:var(--text)}
-.team-role{font-size:0.75rem;color:var(--muted)}
+.trusted-marquee{
+  overflow:hidden;
+  mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent);
+  -webkit-mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent);
+}
+.trusted-track{
+  display:flex;align-items:center;gap:4rem;
+  animation:marquee 30s linear infinite;
+  width:max-content;
+}
+.trusted-track:hover{animation-play-state:paused}
+@keyframes marquee{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+.trusted-logo{
+  height:32px;width:auto;
+  flex-shrink:0;
+  filter:brightness(0) invert(1);
+  opacity:0.5;
+  transition:all 0.3s;
+}
+.trusted-logo:hover{
+  opacity:1;
+}
 
 /* ─── DIVIDER ─── */
 .divider{height:1px;background:var(--border);margin:0 3rem}
@@ -279,6 +300,10 @@ section.active{display:block}
   font-family:var(--font-d);font-size:1.1rem;font-weight:300;
   color:var(--muted);padding-top:0.2rem;letter-spacing:0.05em;
 }
+.service-label{
+  font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--accent);display:block;margin-bottom:0.5rem;
+}
 .service-content h3{
   font-family:var(--font-d);font-size:1.8rem;font-weight:400;
   color:var(--text);margin-bottom:0.75rem;letter-spacing:-0.01em;
@@ -310,6 +335,8 @@ section.active{display:block}
 }
 .deploy-card h3{font-family:var(--font-d);font-size:1.5rem;font-weight:400;color:var(--text);margin-bottom:0.75rem}
 .deploy-card p{font-size:0.88rem;color:var(--muted);line-height:1.7}
+.deploy-tags{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem}
+.deploy-tags .tag{font-size:0.65rem;background:rgba(201,169,110,0.15);color:var(--accent);border:none}
 
 /* ─── USE CASES PAGE ─── */
 .uc-header{
@@ -335,8 +362,15 @@ section.active{display:block}
 .uc-icon svg{width:22px;height:22px;stroke:var(--accent);fill:none;stroke-width:1.5}
 .uc-card h3{font-family:var(--font-d);font-size:1.5rem;font-weight:400;color:var(--text);margin-bottom:0.75rem}
 .uc-card p{font-size:0.9rem;color:var(--muted2);line-height:1.75}
+.uc-deployed{
+  margin-top:1.25rem;font-size:0.8rem;color:var(--muted);line-height:1.6;
+}
+.uc-deployed-label{
+  font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--accent);margin-right:0.5rem;
+}
 .uc-result{
-  margin-top:1.25rem;padding:0.75rem 1rem;
+  margin-top:0.75rem;padding:0.75rem 1rem;
   background:var(--surface);border-left:2px solid var(--accent);border-radius:0 2px 2px 0;
 }
 .uc-result-label{font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:0.2rem}
@@ -472,6 +506,7 @@ footer{
   nav{padding:1.25rem 1.5rem}
   .metrics-strip{grid-template-columns:1fr 1fr;padding:2rem 1.5rem}
   .about-grid,.uc-grid,.deploy-grid,.contact-layout{grid-template-columns:1fr}
+  .about-cards{grid-template-columns:1fr}
   .uc-bottom{grid-template-columns:1fr}
   .rag-explainer{grid-template-columns:1fr}
   .rag-col{border-right:none;border-bottom:1px solid var(--border)}
@@ -528,7 +563,7 @@ section{animation:fadeIn 0.5s ease}
     <div class="hero-content">
       <span class="hero-eyebrow">AI Consulting & Product Studio</span>
       <h1 class="hero-title">Vecter<em>AI</em></h1>
-      <p class="hero-sub">Private intelligence infrastructure for companies that want to lead — not follow. Tailored AI systems built around your data, your processes, your people.</p>
+      <p class="hero-sub">Before AI can transform how your company operates, your data needs to be structured and clean. Once that foundation is in place, everything else can be built on top of it.</p>
       <div style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0.75rem">
         <button class="hero-cta" onclick="showSection('services')">Explore Services</button>
         <button class="hero-cta-ghost" onclick="showSection('contact')">Book a Call</button>
@@ -544,27 +579,28 @@ section{animation:fadeIn 0.5s ease}
   <div class="metrics-strip">
     <div class="metric">
       <div class="metric-num">87<span>%</span></div>
-      <div class="metric-label">Faster document retrieval</div>
+      <div class="metric-label">Faster Document Retrieval</div>
     </div>
     <div class="metric">
       <div class="metric-num">2.5<span>h</span></div>
-      <div class="metric-label">Saved per person per day</div>
+      <div class="metric-label">Saved Per Person Per Day</div>
     </div>
     <div class="metric">
-      <div class="metric-num">65<span>%</span></div>
-      <div class="metric-label">Reduction in onboarding time</div>
+      <div class="metric-num">89<span>%</span></div>
+      <div class="metric-label">Predictive Model Accuracy</div>
     </div>
     <div class="metric">
       <div class="metric-num">&lt;60<span>s</span></div>
-      <div class="metric-label">Any document found & summarised</div>
+      <div class="metric-label">Any Document Found & Summarised</div>
     </div>
   </div>
 
   <!-- HOME INTRO -->
   <div class="section-inner">
     <span class="section-eyebrow">What We Do</span>
-    <h2 class="section-title">Your organisation holds<br>more intelligence than it<br><em>can currently access.</em></h2>
-    <p class="section-body">Contracts buried in folders. Decisions lost in emails. Knowledge that walks out the door when people leave. We fix this — permanently. Our RAG-first approach makes your existing knowledge instantly searchable, connectable, and useful — then we build custom models and automation on top.</p>
+    <h2 class="section-title">Data structuring is the basis for<br>unlocking the real potential AI holds,<br><em>and this is not solved by off-the-shelf software.</em></h2>
+    <p class="section-body">It quickly became clear that no off-the-shelf software can effectively provide accurate, insightful solutions that really help your business. This is because the features have not been tailored to your needs, but rather to the industry as a whole — providing generic insights and advice.</p>
+    <p class="section-body" style="margin-top:1rem">We start where it actually matters: making sure your data is clean, structured, and ready. Once that foundation is solid, we build predictive tools and AI systems tailored to your specific operations, not generic software or off-the-shelf features. Solutions that directly reduce costs, eliminate inefficiencies, and give your team the clarity to make better decisions, faster.</p>
     <div style="margin-top:3rem;display:flex;gap:1rem;flex-wrap:wrap">
       <button class="hero-cta" style="background:transparent;color:var(--text);border:1px solid var(--border2)" onclick="showSection('services')">View Services →</button>
       <button class="hero-cta" style="background:transparent;color:var(--accent);border:1px solid rgba(201,169,110,0.3)" onclick="showSection('usecases')">See Use Cases →</button>
@@ -610,32 +646,16 @@ section{animation:fadeIn 0.5s ease}
 
   <div class="section-inner">
     <span class="section-eyebrow">About VecterAI</span>
-    <h2 class="section-title">We are the generation<br>that builds what<br><em>AI promises.</em></h2>
-    <p class="section-body">VecterAI is an AI consulting and product studio founded by master's students at IE University Madrid. We don't believe in AI for the sake of it — we believe in precision-built systems that create tangible, measurable advantage for the businesses that deploy them.</p>
+    <h2 class="section-title">AI consulting and<br>product studio that builds<br><em>measurable advantage.</em></h2>
+    <p class="section-body">VecterAI is an AI consulting and product studio. We don't believe in AI for the sake of it; we build the foundation that creates measurable, lasting advantages for the businesses that deploy it.</p>
 
     <div class="about-grid">
       <div class="about-text">
-        <p>Most companies know they should be doing something with AI. The challenge isn't access — it's <strong>direction, trust, and the capacity to build it right</strong>. That's where we come in.</p>
-        <p>As MTGA graduates at <strong>IE University</strong>, one of Europe's top business schools, we sit at the intersection of business acumen and technical depth. We don't outsource the hard parts. We build everything ourselves — architecture, pipelines, models, and interfaces.</p>
-        <p>Every engagement begins with a discovery session. We map how information flows through your organisation, identify where intelligence is being lost, and design a system that brings it back — permanently. Then we execute.</p>
-        <p>Our clients are mid-sized European businesses that want to compete with larger players. Companies that don't have a 20-person AI team internally, but want the same infrastructure. That is exactly what we build for them — <strong>privately, isolated, and tailored</strong> to their domain.</p>
-
-        <div class="team-row">
-          <div class="team-badge">
-            <div class="team-avatar">F</div>
-            <div class="team-info">
-              <span class="team-name">Ferdinand</span>
-              <span class="team-role">Founder & Technical Lead</span>
-            </div>
-          </div>
-          <div class="team-badge">
-            <div class="team-avatar" style="background:var(--blue-dim);color:var(--blue)">IE</div>
-            <div class="team-info">
-              <span class="team-name">IE University</span>
-              <span class="team-role">MTGA Program, Madrid</span>
-            </div>
-          </div>
-        </div>
+        <p>Most companies know they should be doing more with AI. The challenge isn't access; it's <strong>the direction, trust, and knowing how to build it right</strong>. That's where we come in.</p>
+        <p>We sit at the intersection of business strategy and technical depth. We understand the hard parts. <strong>Architecture, data pipelines, models, and interfaces</strong> — we build everything ourselves, end to end.</p>
+        <p>As MTGA graduates at <strong>IE University</strong>, one of Europe's top universities, we haven't only understood how to build bulletproof infrastructure, but also how to handle it, providing GDPR-compliant data-handling systems.</p>
+        <p>Every engagement starts with a discovery session. We map how information flows through your organization, identify where intelligence is being lost, and design a system to capture it permanently. Then we execute.</p>
+        <p>Our clients are ambitious mid-sized European businesses that want to compete with larger players — without a 20-person internal AI team. We build them exactly the infrastructure the big players have: <strong>private, isolated, and tailored</strong> to their domain.</p>
       </div>
 
       <div class="about-cards">
@@ -646,19 +666,42 @@ section{animation:fadeIn 0.5s ease}
         </div>
         <div class="about-card">
           <span class="about-card-icon">02 — Stack</span>
-          <h3>Modern, Proven Technology</h3>
-          <p>Next.js, Supabase, pgvector, Claude API, and n8n. We use what works — not what's fashionable. Every choice is justified, every dependency justified.</p>
+          <h3>Built on What Works</h3>
+          <p>We use best-in-class, enterprise-grade technologies — chosen for security, reliability, and long-term scalability. No shortcuts, no experiments. Every tool we deploy has been vetted to perform in production.</p>
         </div>
         <div class="about-card">
           <span class="about-card-icon">03 — Principle</span>
           <h3>Your Data Stays Yours</h3>
-          <p>Isolated deployments, configurable processing locations, and read-only integrations. We touch nothing we don't need. Your data never trains anyone's model.</p>
+          <p>Isolated deployments, configurable processing locations, and read-only integrations. We touch nothing we don't need. Your data never trains anyone else's model.</p>
         </div>
         <div class="about-card">
-          <span class="about-card-icon">04 — Model</span>
-          <h3>Consulting + Product</h3>
-          <p>We don't just consult — we build and deploy. Every engagement ends with a live, operational system, not a slide deck of recommendations.</p>
+          <span class="about-card-icon">04 — Foundation</span>
+          <h3>The Foundation Unlocks Everything</h3>
+          <p>Once your data foundation is in place, anything can be built on top of it. Predictive analytics, operational dashboards, automated reporting, demand forecasting, cost modeling — whatever your business needs most.</p>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUSTED BY: Full width animated section -->
+  <div class="trusted-section">
+    <span class="trusted-label">Powered by</span>
+    <div class="trusted-marquee">
+      <div class="trusted-track">
+        <img src="ie-logo.svg" alt="IE University" class="trusted-logo">
+        <img src="google-logo.svg" alt="Google" class="trusted-logo">
+        <img src="claude-logo.svg" alt="Claude" class="trusted-logo">
+        <img src="aws-logo.svg" alt="AWS" class="trusted-logo">
+        <img src="openai-logo.svg" alt="OpenAI" class="trusted-logo">
+        <img src="azure-logo.svg" alt="Azure" class="trusted-logo">
+        <img src="eu-logo.svg" alt="EU Commission Approved" class="trusted-logo">
+        <img src="ie-logo.svg" alt="IE University" class="trusted-logo">
+        <img src="google-logo.svg" alt="Google" class="trusted-logo">
+        <img src="claude-logo.svg" alt="Claude" class="trusted-logo">
+        <img src="aws-logo.svg" alt="AWS" class="trusted-logo">
+        <img src="openai-logo.svg" alt="OpenAI" class="trusted-logo">
+        <img src="azure-logo.svg" alt="Azure" class="trusted-logo">
+        <img src="eu-logo.svg" alt="EU Commission Approved" class="trusted-logo">
       </div>
     </div>
   </div>
@@ -681,23 +724,23 @@ section{animation:fadeIn 0.5s ease}
     <div class="services-hero-inner">
       <span class="section-eyebrow">Our Services</span>
       <h2 class="section-title">RAG is the foundation.<br>Everything else is built<br><em>on top of it.</em></h2>
-      <p class="section-body" style="max-width:600px">Retrieval-Augmented Generation isn't a feature — it's an infrastructure decision. Once your organisation has a private intelligence layer, every model, automation, and product you want to build becomes dramatically faster and more accurate.</p>
+      <p class="section-body" style="max-width:700px">Before any AI feature can work, your data needs to be in order. We start by doing what most skip — building a RAG foundation that ensures every document, email, meeting note, and recording your company has ever produced is indexed, connected, and instantly accessible. Once that foundation exists, we build everything on top of it.</p>
 
       <div class="rag-explainer">
         <div class="rag-col">
           <div class="rag-num">01</div>
           <h3>Your Knowledge</h3>
-          <p>Every document, email, note, voice memo, and recording your organisation has ever produced — indexed, connected, and accessible in a private vector database.</p>
+          <p>Every document, email, meeting note, and recording your company has ever produced is structured, indexed, and stored in a private database accessible only to you.</p>
         </div>
         <div class="rag-col">
           <div class="rag-num">02</div>
-          <h3>Retrieval</h3>
-          <p>A question is asked. The system finds the most semantically relevant content from your private corpus — not the internet. Your specific history and context.</p>
+          <h3>Instant Retrieval</h3>
+          <p>Ask anything. The system searches across your entire company history and surfaces the most relevant content in seconds — from your data, your context, your history. Not the internet.</p>
         </div>
         <div class="rag-col">
           <div class="rag-num">03</div>
-          <h3>Generation</h3>
-          <p>The AI answers using retrieved content only. Specific to your deals, your people, your numbers, your history. Always accurate. Never generic.</p>
+          <h3>Unlock What Your Data Can Do</h3>
+          <p>Find any document in seconds. Walk into every meeting fully briefed. Use your structured knowledge as the foundation to build real AI solutions — forecasting, automation, predictive models tailored to how your business runs.</p>
         </div>
       </div>
     </div>
@@ -707,68 +750,75 @@ section{animation:fadeIn 0.5s ease}
     <div class="service-item">
       <div class="service-num">01</div>
       <div class="service-content">
-        <h3>Private RAG Infrastructure</h3>
-        <p>We build your organisation's intelligence layer from the ground up. Every source — email, files, messages, voice — connected, processed through our six-phase pipeline, and semantically indexed. The foundation every other service sits on.</p>
+        <span class="service-label">Foundation</span>
+        <h3>Data Structuring & RAG Infrastructure</h3>
+        <p>We index every piece of information your organization holds — contracts, emails, meeting notes, voice recordings, and reports — and connect them inside a private intelligence layer. Every document is processed, classified, and semantically linked to related content. Ask a question, get the right answer from your own data in seconds.</p>
         <div class="service-tags">
-          <span class="tag">pgvector</span>
-          <span class="tag">Claude API</span>
-          <span class="tag">OCR & Transcription</span>
+          <span class="tag">Document Indexing</span>
+          <span class="tag">Semantic Search</span>
           <span class="tag">Entity Extraction</span>
           <span class="tag">Delta Sync</span>
+          <span class="tag">Vector Database</span>
         </div>
       </div>
     </div>
     <div class="service-item">
       <div class="service-num">02</div>
       <div class="service-content">
-        <h3>Custom AI Model Development</h3>
-        <p>With the RAG foundation in place, our data science team builds bespoke models tailored to your domain — classification, prediction, anomaly detection, valuation models. We don't use generic off-the-shelf models. We build yours.</p>
+        <span class="service-label">Command Centre</span>
+        <h3>Your Intelligence Dashboard</h3>
+        <p>Once your data is structured, we deploy a central dashboard where your team can search across everything, assign documents to projects, prepare client briefings, and surface exactly what they need before every meeting. No more digging through folders. No more lost context.</p>
         <div class="service-tags">
-          <span class="tag">Supervised Learning</span>
-          <span class="tag">Fine-Tuning</span>
-          <span class="tag">XGBoost</span>
-          <span class="tag">Forecasting</span>
-          <span class="tag">Anomaly Detection</span>
+          <span class="tag">Document Q&A</span>
+          <span class="tag">Project Assignment</span>
+          <span class="tag">Auto-Briefings</span>
+          <span class="tag">Cross-Linking</span>
+          <span class="tag">Multilingual</span>
         </div>
       </div>
     </div>
     <div class="service-item">
       <div class="service-num">03</div>
       <div class="service-content">
-        <h3>Intelligent Agent Systems</h3>
-        <p>Multi-agent architectures that run autonomously — monitoring, reporting, drafting, alerting, routing. Agents that read your emails, brief you before meetings, flag what needs attention, and handle the repetitive so your team doesn't have to.</p>
+        <span class="service-label">Predictive Models</span>
+        <h3>Built on Your Data, For Your Business</h3>
+        <p>With a clean, structured foundation in place, we build predictive and analytical tools tailored to your business's needs: demand forecasting, cost modeling, performance analytics, and anomaly detection. Not generic software. Models trained on your history, your numbers, your domain.</p>
         <div class="service-tags">
-          <span class="tag">n8n Orchestration</span>
-          <span class="tag">Claude Agents</span>
-          <span class="tag">Telegram Integration</span>
-          <span class="tag">PWA Delivery</span>
+          <span class="tag">Forecasting</span>
+          <span class="tag">Classification</span>
+          <span class="tag">Anomaly Detection</span>
+          <span class="tag">Fine-Tuning</span>
+          <span class="tag">XGBoost</span>
         </div>
       </div>
     </div>
     <div class="service-item">
       <div class="service-num">04</div>
       <div class="service-content">
-        <h3>Document Intelligence & Automation</h3>
-        <p>Your existing document library — contracts, invoices, NDAs, reports — automatically classified, summarised, cross-linked, and surfaced the moment it matters. Pre-meeting briefings. Commitment tracking. Knowledge onboarding.</p>
+        <span class="service-label">Automation & Agents</span>
+        <h3>24/7 Digital Working Employees</h3>
+        <p>Autonomous agents that monitor, report, draft, and alert — reading your emails, flagging what needs attention, briefing you before meetings, and handling the repetitive so your team stays focused on what matters.</p>
         <div class="service-tags">
-          <span class="tag">PDF Parsing</span>
-          <span class="tag">Contract Analysis</span>
-          <span class="tag">Auto-Classification</span>
-          <span class="tag">Multilingual</span>
+          <span class="tag">n8n Orchestration</span>
+          <span class="tag">Claude Agents</span>
+          <span class="tag">Email Automation</span>
+          <span class="tag">Telegram</span>
+          <span class="tag">Smart Alerts</span>
         </div>
       </div>
     </div>
     <div class="service-item">
       <div class="service-num">05</div>
       <div class="service-content">
-        <h3>Full-Stack AI Product Development</h3>
-        <p>End-to-end product builds — internal command centres, customer-facing AI tools, mobile PWAs, dashboards, and reporting systems. From architecture decision records to live deployment. We ship complete products, not prototypes.</p>
+        <span class="service-label">Custom Products</span>
+        <h3>Any Feature Your Business Needs</h3>
+        <p>Phone apps for team management, client-facing tools, internal dashboards, mobile PWAs — once the foundation is live, we build whatever comes next. Full-stack, fully deployed, fully yours.</p>
         <div class="service-tags">
           <span class="tag">Next.js</span>
           <span class="tag">Supabase</span>
           <span class="tag">TypeScript</span>
-          <span class="tag">Tailwind</span>
-          <span class="tag">Hetzner VPS</span>
+          <span class="tag">PWA</span>
+          <span class="tag">Mobile</span>
         </div>
       </div>
     </div>
@@ -781,17 +831,22 @@ section{animation:fadeIn 0.5s ease}
   </div>
   <div class="deploy-grid">
     <div class="deploy-card">
-      <h3>Cloud</h3>
-      <p>Documents processed via frontier AI models. Maximum AI quality. Original files never leave your source system. Anthropic's terms prohibit training on API inputs — your data never trains any model.</p>
+      <h3>Cloud — Choose Your AI Model</h3>
+      <p>Process your documents using the world's leading AI models — Claude by Anthropic, GPT-4, or others based on your preference. Your files never leave your source system, processing happens securely in the cloud, and your data never trains any model.</p>
     </div>
     <div class="deploy-card rec">
       <span class="deploy-badge">Recommended</span>
       <h3>Hybrid</h3>
-      <p>Operational documents — meeting notes, correspondence, reports — processed via cloud for maximum quality. Sensitive documents — NDAs, board materials, financials — processed locally. Routing is automatic.</p>
+      <p>The best of both worlds. Everyday documents — emails, meeting notes, and reports — are processed via your chosen AI model for maximum accuracy. Sensitive materials — financials, NDAs, and board documents — are processed locally, never leaving your environment. Routing is automatic.</p>
     </div>
     <div class="deploy-card">
-      <h3>Local</h3>
-      <p>All AI processing runs on infrastructure within your own environment. Zero data leaves at any point. Satisfies the strictest regulatory and confidentiality requirements. Complete sovereignty.</p>
+      <h3>Local — Full Sovereignty</h3>
+      <p>All processing runs entirely within your own infrastructure. No external API calls, no third-party models see your content, and no data ever leaves your environment. Built for organizations in financial services, legal, or healthcare — where sovereignty isn't a preference, it's a requirement.</p>
+      <div class="deploy-tags">
+        <span class="tag">Maximum Security</span>
+        <span class="tag">Zero Data Exposure</span>
+        <span class="tag">Regulatory Compliant</span>
+      </div>
     </div>
   </div>
 
@@ -820,68 +875,77 @@ section{animation:fadeIn 0.5s ease}
   <div class="uc-grid">
     <div class="uc-card">
       <div class="uc-icon">
-        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M2 20h20M5 20V8l7-5 7 5v12M9 20v-6h6v6"/></svg>
       </div>
-      <h3>Professional Services & Law</h3>
-      <p>Firms managing hundreds of client files, contracts, and precedents lose hours daily searching through versions and folders. A RAG system indexes every document — searchable by meaning, not just file name. Associates brief themselves in minutes, not hours.</p>
+      <h3>Construction & Project Management</h3>
+      <p>A mid-sized European construction firm managing 8 active sites had project data scattered across email threads, subcontractor WhatsApps, planning portals, and procurement systems. We deployed a RAG foundation that indexes every document, contract, and correspondence across all sites. On top of that, a forecasting layer now predicts material cost overruns 3–4 weeks before they occur, flags subcontractor delays based on communication patterns, and automatically generates weekly project health reports.</p>
+      <div class="uc-deployed">
+        <span class="uc-deployed-label">Deployed</span>
+        <span>RAG Infrastructure, Cost Forecasting, Delay Detection, Automated Reporting</span>
+      </div>
       <div class="uc-result">
         <div class="uc-result-label">Outcome</div>
-        <div class="uc-result-text">87% faster document retrieval. New associates productive from day one.</div>
-      </div>
-    </div>
-    <div class="uc-card">
-      <div class="uc-icon">
-        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-      </div>
-      <h3>Manufacturing & Flooring</h3>
-      <p>Complex product catalogues, supplier price lists, installation specifications, and customer histories spread across email and folders. AI agents surface the right spec before a site visit, flag price changes automatically, and generate proposals from historical data.</p>
-      <div class="uc-result">
-        <div class="uc-result-label">Outcome</div>
-        <div class="uc-result-text">Quote generation time reduced by 70%. Zero missed supplier updates.</div>
-      </div>
-    </div>
-    <div class="uc-card">
-      <div class="uc-icon">
-        <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-      </div>
-      <h3>Private Asset Management</h3>
-      <p>Investment memos, board packs, valuation reports, and LP updates distributed across inboxes and drives. AI indexes and connects every document, extracts financial figures and entity relationships, and delivers pre-meeting intelligence before every call.</p>
-      <div class="uc-result">
-        <div class="uc-result-label">Outcome</div>
-        <div class="uc-result-text">Portfolio monitoring automated. Partner briefing time from 2h to 12 minutes.</div>
-      </div>
-    </div>
-    <div class="uc-card">
-      <div class="uc-icon">
-        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      </div>
-      <h3>Real Estate Development</h3>
-      <p>Projects spanning years generate thousands of emails, planning documents, contractor conversations, and legal correspondences. RAG makes every commitment traceable. Agents monitor project threads and surface blockers before they become delays.</p>
-      <div class="uc-result">
-        <div class="uc-result-label">Outcome</div>
-        <div class="uc-result-text">Commitment tracking automated. Project director briefed daily in under 3 minutes.</div>
+        <div class="uc-result-text">Project overruns reduced by 40%. Site director briefing time cut from 3 hours to 20 minutes weekly.</div>
       </div>
     </div>
     <div class="uc-card">
       <div class="uc-icon">
         <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       </div>
-      <h3>Healthcare & Equine / Veterinary</h3>
-      <p>Medical histories, treatment protocols, supplier records, and regulatory documents need to be instantly accessible and linkable. AI classifies every record, surfaces relevant history before appointments, and maintains full audit trails automatically.</p>
+      <h3>Equine & Stable Management</h3>
+      <p>A premium competition stable preparing 20+ horses across grand prix, young horse, and breeding programs had performance logs, training diaries, competition results, shoeing records, and veterinary histories spread across paper files, WhatsApp groups, and spreadsheets with no connection between them. We built a RAG system indexing every horse's complete history, instantly searchable by horse, competition record, training phase, or health status. A predictive performance layer analyzes training load, competition frequency, and recovery patterns to flag horses approaching peak form and those at risk of overtraining.</p>
+      <div class="uc-deployed">
+        <span class="uc-deployed-label">Deployed</span>
+        <span>RAG Infrastructure, Performance Prediction, Training Load Monitoring, Team Mobile App</span>
+      </div>
       <div class="uc-result">
         <div class="uc-result-label">Outcome</div>
-        <div class="uc-result-text">Patient history surfaced in under 10 seconds. Regulatory compliance maintained passively.</div>
+        <div class="uc-result-text">Competition preparation time cut by 50%. Further development ongoing.</div>
       </div>
     </div>
     <div class="uc-card">
       <div class="uc-icon">
-        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
       </div>
-      <h3>The AI Landscape Is Moving Fast</h3>
-      <p>Tools are commoditising. Generic AI assistants are everywhere. The competitive advantage now sits in the layer below the tool — the private intelligence infrastructure that gives AI your context, your history, your domain. The window to build this before your competitors is open. Not indefinitely.</p>
+      <h3>Legal — Boutique Law Firm</h3>
+      <p>A boutique firm handling corporate transactions and employment law was losing billable hours to document retrieval and case preparation. We deployed a private RAG system that indexes every case file, precedent, contract, and correspondence — fully isolated, with zero data leaving their environment. A command center dashboard allows fee earners to search across all matters by meaning, assign documents to cases, and generate client briefings in minutes.</p>
+      <div class="uc-deployed">
+        <span class="uc-deployed-label">Deployed</span>
+        <span>RAG Infrastructure, Matter Dashboard, Auto-Briefings</span>
+      </div>
       <div class="uc-result">
-        <div class="uc-result-label">The Opportunity</div>
-        <div class="uc-result-text">First-movers in each industry are building infrastructure that becomes a structural moat.</div>
+        <div class="uc-result-label">Outcome</div>
+        <div class="uc-result-text">Case preparation time cut by 60%. Associate onboarding from 3 months to 3 weeks.</div>
+      </div>
+    </div>
+    <div class="uc-card">
+      <div class="uc-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <h3>Real Estate — Investment & Sales</h3>
+      <p>A real estate investment firm operating across three European markets had property data, investor communications, market reports, and outreach histories distributed across inboxes, CRMs, and shared drives. We built a RAG foundation connecting every asset, deal, and relationship. On top of that, an intelligent outreach system identifies the right investor profile for each new listing based on historical transaction data, automatically drafts personalized outreach, and tracks responses — all from a single dashboard.</p>
+      <div class="uc-deployed">
+        <span class="uc-deployed-label">Deployed</span>
+        <span>RAG Infrastructure, Investor Matching, Automated Outreach, Pipeline Dashboard</span>
+      </div>
+      <div class="uc-result">
+        <div class="uc-result-label">Outcome</div>
+        <div class="uc-result-text">Outreach response rate up 45%. Pipeline capacity doubled without additional hires.</div>
+      </div>
+    </div>
+    <div class="uc-card">
+      <div class="uc-icon">
+        <svg viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0H5m14 0h2m-2 0h-2M5 21H3m2 0h2M9 7h1m5 0h1M9 11h1m5 0h1M9 15h1m5 0h1"/></svg>
+      </div>
+      <h3>Hospitality & Hotel Group</h3>
+      <p>A boutique hotel group operating across five properties had guest records, supplier contracts, staff schedules, maintenance logs, and revenue reports spread across five systems with no connection between them. We built a RAG foundation unifying every property's data into a single private intelligence layer. A predictive layer now forecasts occupancy and revenue per property 6 weeks ahead, automatically flags supplier contract renewals, and generates weekly operational briefings for each property manager.</p>
+      <div class="uc-deployed">
+        <span class="uc-deployed-label">Deployed</span>
+        <span>RAG Infrastructure, Revenue Forecasting, Supplier Management, Operations Dashboard, Mobile App</span>
+      </div>
+      <div class="uc-result">
+        <div class="uc-result-label">Outcome</div>
+        <div class="uc-result-text">Revenue forecast accuracy improved by 34%. Group director's oversight time cut by half.</div>
       </div>
     </div>
   </div>
@@ -899,15 +963,15 @@ section{animation:fadeIn 0.5s ease}
       </div>
       <div class="uc-stat">
         <div class="uc-stat-num">2.5h</div>
-        <div class="uc-stat-desc">Saved per person per working day — time previously spent searching</div>
+        <div class="uc-stat-desc">Saved per person per working day — time previously lost to searching</div>
       </div>
       <div class="uc-stat">
-        <div class="uc-stat-num">65%</div>
-        <div class="uc-stat-desc">Reduction in new hire onboarding time — context is in the system</div>
+        <div class="uc-stat-num">89%</div>
+        <div class="uc-stat-desc">Predictive model accuracy once the data foundation is live</div>
       </div>
       <div class="uc-stat">
-        <div class="uc-stat-num">&lt;60s</div>
-        <div class="uc-stat-desc">Any document found, retrieved, and summarised from any source</div>
+        <div class="uc-stat-num">6<span>wks</span></div>
+        <div class="uc-stat-desc">Average time from discovery session to live deployed system</div>
       </div>
     </div>
   </div>
